@@ -3,7 +3,7 @@ export function renderHeader(user) {
   header.className = 'navbar navbar-expand-lg';
   header.innerHTML = `
     <div class="container-fluid d-flex justify-content-between align-items-center">
-      <a class="navbar-brand" href="/">
+      <a class="navbar-brand" href="/Dashboard.html">
         <img src="/assets/img/logo_balmoral.png" alt="Logo Balmoral" style="height: 40px;">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegación">

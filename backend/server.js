@@ -33,6 +33,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use('/assets', express.static(path.join(__dirname, '../public'))); // Sirve todos los archivos de public bajo /assets
+// Esto significa que todos los archivos dentro de /public sólo estarán disponibles desde rutas que empiecen con /assets
 app.use('/js', express.static(path.join(__dirname, '../public/js')));
 app.use(session({
   secret: process.env.SESSION_SECRET || 'tu_secreto_aqui',

@@ -26,6 +26,10 @@ router.get('/Gestion-Captacion.html', authMiddleware, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/html/Gestion-Captacion.html'));
 });
 
+router.get('/DashboardAlumno.html', authMiddleware, (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public/html/DashboardAlumno.html'));
+});
+
 // CSRF token endpoint
 router.get('/csrf-token', (req, res) => {
   res.json({ csrfToken: req.csrfToken() });
@@ -54,8 +58,8 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ success: false, message: 'Correo o contraseña incorrectos.' });
     }
     const [personal] = await db.query('SELECT id_personal, id_puesto, nombre_personal, apaterno_personal, amaterno_personal FROM Personal WHERE id_usuario = ?', [user.id_usuario]);
-    const [alumno] = await db.query('SELECT id_alumno FROM Alumno WHERE id_usuario = ?', [user.id_usuario]);
-    let userType, roles = [], id_personal = null, id_puesto = null, nombre_completo = null;
+    const [alumno] = await db.query('SELECT id_alumno, nombre_alumno, apaterno_alumno, amaterno_alumno FROM Alumno WHERE id_usuario = ?', [user.id_usuario]);
+    let userType, roles = [], id_personal = null, id_puesto = null, nombre_completo = null, id_alumno = null;
     if (personal.length > 0) {
       userType = 'personal';
       id_personal = personal[0].id_personal;
@@ -68,30 +72,33 @@ router.post('/login', async (req, res) => {
         WHERE pr.id_personal = ?
       `, [id_personal]);
       roles = personalRoles.map(role => ({ id_rol: role.id_rol, nombre_rol: role.nombre_rol }));
-    } else if (alumno.length > 0) {
-        userType = 'alumno';
-        const [alumnoDatos] = await db.query(`
-            SELECT nombre_alumno, apaterno_alumno, amaterno_alumno
-            FROM Alumno
-            WHERE id_usuario = ?
-        `, [user.id_usuario]);
 
-        if (alumnoDatos.length > 0) {
-            nombre_completo = `${alumnoDatos[0].nombre_alumno} ${alumnoDatos[0].apaterno_alumno} ${alumnoDatos[0].amaterno_alumno || ''}`.trim();
-        }
+      req.session.user = {
+        id_usuario: user.id_usuario,
+        email: user.correo_usuario,
+        userType,
+        id_personal,
+        id_puesto,
+        roles,
+        nombre_completo
+      };
+      res.json({ success: true , userType, redirect: '/Dashboard.html' });
+    } else if (alumno.length > 0) {
+        userType = 'alumno'; 
+        id_alumno = alumno[0].id_alumno; 
+        nombre_completo = `${alumno[0].nombre_alumno} ${alumno[0].apaterno_alumno} ${alumno[0].amaterno_alumno || ''}`.trim();
+
+        req.session.user = {
+          id_usuario: user.id_usuario,
+          email: user.correo_usuario,
+          userType,
+          id_alumno,
+          nombre_completo
+        };
+        res.json({ success: true , userType, redirect: '/DashboardAlumno.html' });
     } else {
       return res.status(500).json({ success: false, message: 'Usuario no asociado a personal o alumno.' });
     }
-    req.session.user = {
-      id_usuario: user.id_usuario,
-      email: user.correo_usuario,
-      userType,
-      id_personal,
-      id_puesto,
-      roles,
-      nombre_completo
-    };
-    res.json({ success: true, userType, redirect: '/Dashboard.html' });
   } catch (error) {
     console.error('Error en login:', error);
     res.status(500).json({ success: false, message: 'Error en el servidor.' });
