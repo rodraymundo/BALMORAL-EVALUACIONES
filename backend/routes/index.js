@@ -10,24 +10,28 @@ router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../../public/html/Login.html'));
 });
 
-router.get('/Dashboard.html', authMiddleware, (req, res) => {
+router.get('/Dashboard', authMiddleware, (req, res) => {
   res.sendFile(path.join(__dirname, '../../public/html/Dashboard.html'));
 });
 
-router.get('/Mi-Perfil.html', authMiddleware, (req, res) => {
-  res.sendFile(path.join(__dirname, '../../public/html/Mi-Perfil.html'));
-});
-
-router.get('/Mis-Evaluaciones.html', authMiddleware, (req, res) => {
+router.get('/Mis-Evaluaciones', authMiddleware, (req, res) => {
   res.sendFile(path.join(__dirname, '../../public/html/Mis-Evaluaciones.html'));
 });
 
-router.get('/Gestion-Captacion.html', authMiddleware, (req, res) => {
+router.get('/Gestion-Captacion', authMiddleware, (req, res) => {
     res.sendFile(path.join(__dirname, '../../public/html/Gestion-Captacion.html'));
 });
 
-router.get('/DashboardAlumno.html', authMiddleware, (req, res) => {
+router.get('/DashboardAlumno', authMiddleware, (req, res) => {
   res.sendFile(path.join(__dirname, '../../public/html/DashboardAlumno.html'));
+});
+
+router.get('/EvaluacionProfesores', authMiddleware, (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public/html/EvaluacionProfesores.html'));
+});
+
+router.get('/EvaluacionServicios', authMiddleware, (req, res) => {
+  res.sendFile(path.join(__dirname, '../../public/html/EvaluacionServicios.html'));
 });
 
 // CSRF token endpoint
@@ -82,7 +86,7 @@ router.post('/login', async (req, res) => {
         roles,
         nombre_completo
       };
-      res.json({ success: true , userType, redirect: '/Dashboard.html' });
+      res.json({ success: true , userType, redirect: '/Dashboard' });
     } else if (alumno.length > 0) {
         userType = 'alumno'; 
         id_alumno = alumno[0].id_alumno; 
@@ -95,7 +99,7 @@ router.post('/login', async (req, res) => {
           id_alumno,
           nombre_completo
         };
-        res.json({ success: true , userType, redirect: '/DashboardAlumno.html' });
+        res.json({ success: true , userType, redirect: '/DashboardAlumno' });
     } else {
       return res.status(500).json({ success: false, message: 'Usuario no asociado a personal o alumno.' });
     }

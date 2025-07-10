@@ -3,7 +3,7 @@ export function renderHeader(user) {
   header.className = 'navbar navbar-expand-lg';
   header.innerHTML = `
     <div class="container-fluid d-flex justify-content-between align-items-center">
-      <a class="navbar-brand" href="/Dashboard.html">
+      <a class="navbar-brand" href="/Dashboard">
         <img src="/assets/img/logo_balmoral.png" alt="Logo Balmoral" style="height: 40px;">
       </a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Alternar navegación">
@@ -21,9 +21,9 @@ export function renderHeader(user) {
             <i class="fas fa-user-circle me-2" id="userIcon"></i>
           </a>
           <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownUser">
-            <li><a class="dropdown-item" href="/Mi-Perfil.html">Ver mi perfil</a></li>
-            <li><a class="dropdown-item" href="/Mis-Evaluaciones.html">Evaluar KPIs</a></li>
-            <li><a class="dropdown-item" id="gestion-captacion-btn" href="/Gestion-Captacion.html" style="display: none;">Gestión de alumnos</a></li>
+            <li><a class="dropdown-item" href="/Mi-Perfil">Ver mi perfil</a></li>
+            <li><a class="dropdown-item" href="/Mis-Evaluaciones">Evaluar KPIs</a></li>
+            <li><a class="dropdown-item" id="gestion-captacion-btn" href="/Gestion-Captacion" style="display: none;">Gestión de alumnos</a></li>
             <li><a class="dropdown-item" id="logout-btn" href="#">Cerrar Sesión</a></li>
           </ul>
         </div>
@@ -117,7 +117,7 @@ export function renderHeader(user) {
   }
 
   // Mostrar modal al dar clic en "Ver mi perfil"
-  const verPerfilLink = header.querySelector('a.dropdown-item[href="/Mi-Perfil.html"]');
+  const verPerfilLink = header.querySelector('a.dropdown-item[href="/Mi-Perfil"]');
   // Ocultar botón de Evaluar KPIs si es alumno
   if (user.userType === 'alumno') {
     const evaluarKPIs = header.querySelector('a[href="/Mis-Evaluaciones.html"]');
