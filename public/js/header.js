@@ -106,9 +106,7 @@ export function renderHeader(user) {
   header.querySelector('#modalUserEmail').textContent = user.email || 'N/A';
 
   const rolesContainer = header.querySelector('#modalUserRoles');
-  if (user.userType === 'alumno') {
-    rolesContainer.innerHTML = '<span class="text-muted">No aplica</span>';
-  } else if (user.roles && user.roles.length > 0) {
+  if (user.roles && user.roles.length > 0) {
     rolesContainer.innerHTML = user.roles.map(r =>
       `<span class="badge bg-dark text-white">${r.nombre_rol}</span>`
     ).join('');
@@ -118,11 +116,6 @@ export function renderHeader(user) {
 
   // Mostrar modal al dar clic en "Ver mi perfil"
   const verPerfilLink = header.querySelector('a.dropdown-item[href="/Mi-Perfil"]');
-  // Ocultar botón de Evaluar KPIs si es alumno
-  if (user.userType === 'alumno') {
-    const evaluarKPIs = header.querySelector('a[href="/Mis-Evaluaciones.html"]');
-    if (evaluarKPIs) evaluarKPIs.style.display = 'none';
-  }
 
   // Mostrar botón de Gestión de alumnos si tiene rol de Captación
   const gestionCaptacionBtn = header.querySelector('#gestion-captacion-btn');

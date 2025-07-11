@@ -93,7 +93,7 @@
             const data = await res.json();
             if (data.authenticated) {
                 // Ya está autenticado, redirigir a dashboard
-                window.location.href = '/Dashboard.html'; // VER QUE PEDO CON LOS ALUMNOS EN ESTO
+                window.location.href = '/Dashboard'; // VER QUE PEDO CON LOS ALUMNOS EN ESTO
             }
             } catch (error) {
             console.error('Error verificando sesión:', error);
